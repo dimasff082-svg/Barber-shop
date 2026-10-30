@@ -26,7 +26,7 @@ Vercel menggunakan arsitektur serverless (AWS Lambda). Karena Vercel secara defa
 4. **Background Worker & Realtime**:
    - **Queue**: Diatur ke `QUEUE_CONNECTION=sync` agar job dieksekusi langsung tanpa memerlukan daemon queue worker yang berjalan terus-menerus.
    - **Realtime**: Pada mode serverless tanpa daemon Reverb mandiri, `BROADCAST_CONNECTION=null` secara aman mengaktifkan mode *polling fallback* bawaan frontend (pemeriksaan berkala ~12 detik untuk pelanggan). Jika ingin WebSocket aktif, dapat menggunakan layanan cloud seperti **Pusher**.
-   - **Cron**: Tersedia endpoint `/api/cron/expire-queues` yang secara otomatis dipanggil oleh fitur Vercel Cron (`* * * * *`) untuk menandai antrean kedaluwarsa.
+   - **Cron (Pembersihan Antrean Kedaluwarsa)**: Tersedia endpoint `GET /api/cron/expire-queues`. Pada paket Vercel Hobby (Gratis), cron bawaan dibatasi 1x per hari. Untuk menjalankan setiap menit secara 100% gratis, Anda dapat menggunakan layanan gratis pihak ketiga seperti [cron-job.org](https://cron-job.org) untuk memanggil URL tersebut.
 
 ---
 

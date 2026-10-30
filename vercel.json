@@ -29,12 +29,6 @@
       "dest": "/api/index.php"
     }
   ],
-  "crons": [
-    {
-      "path": "/api/cron/expire-queues",
-      "schedule": "* * * * *"
-    }
-  ],
   "env": {
     "APP_ENV": "production",
     "APP_DEBUG": "false",
