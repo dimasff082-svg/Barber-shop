@@ -7,6 +7,9 @@ import laravel from 'laravel-vite-plugin';
 import { bunny } from 'laravel-vite-plugin/fonts';
 import { defineConfig, lazyPlugins } from 'vite-plus';
 
+// Cek apakah sedang proses build di Vercel atau Production
+const isProduction = process.env.NODE_ENV === 'production' || process.env.VERCEL;
+
 export default defineConfig({
     plugins: lazyPlugins(() => [
         laravel({
@@ -24,9 +27,14 @@ export default defineConfig({
             presets: [reactCompilerPreset()],
         }),
         tailwindcss(),
-        wayfinder({
-            formVariants: true,
-        }),
+        // Wayfinder hanya dimuat di lokal, dilewati saat build di Vercel
+        ...(!isProduction
+            ? [
+                  wayfinder({
+                      formVariants: true,
+                  }),
+              ]
+            : []),
     ]),
     server: {
         // Keep HTTP assets and HMR on the same loopback interface on Laragon.
