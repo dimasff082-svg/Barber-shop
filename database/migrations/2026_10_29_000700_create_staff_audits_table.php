@@ -11,7 +11,11 @@ return new class extends Migration
     {
         Schema::create('staff_audits', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('actor_user_id')->constrained('users')->restrictOnDelete();
+            if (DB::getDriverName() === 'mysql') {
+                $table->unsignedBigInteger('actor_user_id')->index();
+            } else {
+                $table->foreignId('actor_user_id')->constrained('users')->restrictOnDelete();
+            }
             $table->string('action', 100);
             $table->string('target_type', 100);
             $table->string('target_id')->nullable();

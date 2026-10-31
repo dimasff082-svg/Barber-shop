@@ -7,20 +7,8 @@ if (-not (Test-Path -LiteralPath $barberflowPhpExecutable)) {
 
 $env:Path = $barberflowPhpDirectory + [IO.Path]::PathSeparator + $env:Path
 
-# The scan directory is inherited by PHP children (Artisan serve/test and Composer).
-# Keep Laragon's global php.ini unchanged and avoid loading the extension twice.
-& $barberflowPhpExecutable -r "exit(extension_loaded('pdo_pgsql') ? 0 : 1);"
-if ($LASTEXITCODE -ne 0) {
-    $barberflowIniDirectory = Join-Path $PSScriptRoot 'php'
-    if ([string]::IsNullOrEmpty($env:PHP_INI_SCAN_DIR)) {
-        $env:PHP_INI_SCAN_DIR = $barberflowIniDirectory
-    } else {
-        $env:PHP_INI_SCAN_DIR = $env:PHP_INI_SCAN_DIR + [IO.Path]::PathSeparator + $barberflowIniDirectory
-    }
-}
-
-& $barberflowPhpExecutable -r "exit(extension_loaded('pdo_pgsql') ? 0 : 1);"
-if ($LASTEXITCODE -ne 0) { throw 'Ekstensi pdo_pgsql gagal dimuat untuk sesi terminal ini.' }
+& $barberflowPhpExecutable -r "exit(extension_loaded('pdo_mysql') ? 0 : 1);"
+if ($LASTEXITCODE -ne 0) { throw 'Ekstensi pdo_mysql gagal dimuat untuk sesi terminal ini.' }
 
 & $barberflowPhpExecutable --version
 if ($LASTEXITCODE -ne 0) { throw 'PHP Laragon gagal dijalankan.' }

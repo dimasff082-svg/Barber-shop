@@ -33,22 +33,3 @@ Route::middleware(['auth', 'staff.active', 'role:admin', StaffPrivacy::class])->
 Route::middleware(StaffPrivacy::class)->group(function () {
     require __DIR__.'/operations.php';
 });
-
-Route::get('api/cron/expire-queues', function (\App\Services\Queue\QueueWorkflow $workflow, \Illuminate\Http\Request $request) {
-    $secret = env('CRON_SECRET');
-    if (! empty($secret)) {
-        $header = $request->header('Authorization');
-        $queryKey = $request->query('key');
-        if ($header !== 'Bearer '.$secret && $queryKey !== $secret) {
-            abort(403, 'Unauthorized cron trigger.');
-        }
-    }
-
-    $expired = $workflow->expireDue();
-
-    return response()->json([
-        'status' => 'success',
-        'expired_queues' => $expired,
-        'timestamp' => now()->toIso8601String(),
-    ]);
-})->name('cron.expire-queues');

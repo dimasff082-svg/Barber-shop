@@ -21,9 +21,11 @@ return new class extends Migration
             $table->string('normalized_phone', 16)->unique();
             $table->timestamps();
         });
-        $phoneCondition = DB::getDriverName() === 'pgsql'
-            ? "normalized_phone ~ '^\\+628[0-9]{7,11}$'"
-            : "length(normalized_phone) BETWEEN 11 AND 15 AND substr(normalized_phone, 1, 4) = '+628' AND substr(normalized_phone, 2) NOT GLOB '*[^0-9]*'";
+        $phoneCondition = match (DB::getDriverName()) {
+            'pgsql' => "normalized_phone ~ '^\\+628[0-9]{7,11}$'",
+            'mysql' => "normalized_phone REGEXP '^\\\\+628[0-9]{7,11}$'",
+            default => "length(normalized_phone) BETWEEN 11 AND 15 AND substr(normalized_phone, 1, 4) = '+628' AND substr(normalized_phone, 2) NOT GLOB '*[^0-9]*'",
+        };
         $this->addCheck('customers', 'customers_phone_valid', $phoneCondition);
 
         Schema::create('business_hours', function (Blueprint $table) {
@@ -83,6 +85,11 @@ return new class extends Migration
 
         if (DB::getDriverName() === 'pgsql') {
             DB::statement('ALTER TABLE barbers DROP CONSTRAINT IF EXISTS barbers_daily_capacity_valid');
+        } elseif (DB::getDriverName() === 'mysql') {
+            try {
+                DB::statement('ALTER TABLE barbers DROP CONSTRAINT IF EXISTS barbers_daily_capacity_valid');
+            } catch (\Throwable) {
+            }
         } elseif (DB::getDriverName() === 'sqlite') {
             DB::statement('DROP TRIGGER IF EXISTS barbers_daily_capacity_valid_insert');
             DB::statement('DROP TRIGGER IF EXISTS barbers_daily_capacity_valid_update');
