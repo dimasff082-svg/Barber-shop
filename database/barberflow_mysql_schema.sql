@@ -165,10 +165,11 @@ CREATE TABLE `barbers` (
   `user_id` bigint(20) unsigned NOT NULL,
   `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `slug` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `queue_prefix` varchar(4) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `phone` varchar(16) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `photo` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `bio` text COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `avatar_path` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `specialization` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `queue_prefix` varchar(3) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `availability_status` enum('available','busy','break','off_duty') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'off_duty',
   `is_active` tinyint(1) NOT NULL DEFAULT 0,
   `accepts_queue` tinyint(1) NOT NULL DEFAULT 0,
   `daily_capacity` smallint(5) unsigned DEFAULT NULL,
@@ -412,5 +413,17 @@ INSERT INTO `migrations` (`migration`, `batch`) VALUES
 ('2026_10_29_000600_create_gallery_images_table', 1),
 ('2026_10_29_000700_create_staff_audits_table', 1)
 ON DUPLICATE KEY UPDATE `batch` = 1;
+
+-- --------------------------------------------------------
+-- Seed Default Staff Login Credentials
+-- --------------------------------------------------------
+INSERT INTO `users` (`id`, `name`, `email`, `email_verified_at`, `password`, `role`, `is_active`, `created_at`, `updated_at`) VALUES
+(1, 'Admin Barberflow', 'admin@barberflow.com', NOW(), '$2y$12$kyS88z.iarudoT6rbHSCmOkXKswBQbcE0b97EiI0z9OVRqfpzW6li', 'admin', 1, NOW(), NOW()),
+(2, 'Barber Dimas', 'barber@barberflow.com', NOW(), '$2y$12$kyS88z.iarudoT6rbHSCmOkXKswBQbcE0b97EiI0z9OVRqfpzW6li', 'barber', 1, NOW(), NOW())
+ON DUPLICATE KEY UPDATE `password` = VALUES(`password`), `is_active` = VALUES(`is_active`), `role` = VALUES(`role`);
+
+INSERT INTO `barbers` (`id`, `user_id`, `name`, `slug`, `photo`, `bio`, `specialization`, `queue_prefix`, `availability_status`, `is_active`, `accepts_queue`, `daily_capacity`, `created_at`, `updated_at`) VALUES
+(1, 2, 'Barber Dimas', 'barber-dimas', NULL, 'Barber berpengalaman dengan keahlian potongan modern dan klasik.', 'Classic Cut & Fade Specialist', 'BDM', 'available', 1, 1, 30, NOW(), NOW())
+ON DUPLICATE KEY UPDATE `is_active` = VALUES(`is_active`), `accepts_queue` = VALUES(`accepts_queue`);
 
 SET FOREIGN_KEY_CHECKS = 1;
