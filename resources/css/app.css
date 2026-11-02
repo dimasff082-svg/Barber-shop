@@ -191,11 +191,11 @@
 }
 
 .staff-theme
-    :where(button, input:not([type='checkbox']):not([type='radio']), select) {
+    :where(button:not([role='checkbox']), input:not([type='checkbox']):not([type='radio']), select) {
     min-height: 2.75rem;
 }
 
-.staff-theme :where(button) {
+.staff-theme :where(button:not([role='checkbox'])) {
     min-width: 2.75rem;
 }
 

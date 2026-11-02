@@ -6,6 +6,7 @@ import TextLink from '@/components/text-link';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import AuthLayout from '@/layouts/auth-layout';
 import { login } from '@/routes';
 import { email } from '@/routes/password';
 
@@ -33,6 +34,7 @@ export default function ForgotPassword({ status }: { status?: string }) {
                                     autoComplete="off"
                                     autoFocus
                                     placeholder="email@example.com"
+                                    className="border-neutral-700/80 bg-neutral-900/90 text-white placeholder:text-neutral-500 focus-visible:border-amber-500 focus-visible:ring-amber-500/30"
                                 />
 
                                 <InputError message={errors.email} />
@@ -40,7 +42,7 @@ export default function ForgotPassword({ status }: { status?: string }) {
 
                             <div className="my-6 flex items-center justify-start">
                                 <Button
-                                    className="w-full"
+                                    className="w-full bg-[#d4af37] font-semibold text-neutral-950 shadow-md shadow-amber-500/20 hover:bg-[#e2c15b] cursor-pointer"
                                     disabled={processing}
                                     data-test="email-password-reset-link-button"
                                 >
@@ -56,14 +58,20 @@ export default function ForgotPassword({ status }: { status?: string }) {
 
                 <div className="space-x-1 text-center text-sm text-muted-foreground">
                     <span>Or, return to</span>
-                    <TextLink href={login()}>log in</TextLink>
+                    <TextLink href={login()} className="text-amber-400 hover:text-amber-300">
+                        log in
+                    </TextLink>
                 </div>
             </div>
         </>
     );
 }
 
-ForgotPassword.layout = {
-    title: 'Forgot password',
-    description: 'Enter your email to receive a password reset link',
-};
+ForgotPassword.layout = (page: React.ReactNode) => (
+    <AuthLayout
+        title="Lupa Kata Sandi"
+        description="Masukkan alamat email Anda untuk menerima tautan reset kata sandi."
+    >
+        {page}
+    </AuthLayout>
+);
