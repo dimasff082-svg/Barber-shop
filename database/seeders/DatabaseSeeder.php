@@ -16,29 +16,32 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // 1. Akun Admin
-        User::updateOrCreate(
-            ['email' => 'admin@barberflow.com'],
-            [
-                'name' => 'Admin Barberflow',
-                'password' => Hash::make('password'),
-                'role' => UserRole::Admin,
-                'is_active' => true,
-                'email_verified_at' => now(),
-            ]
-        );
+        // 1. Akun Admin Utama
+        $admin1 = User::firstOrNew(['email' => 'admin@barberflow.com']);
+        $admin1->name = 'Admin Barberflow';
+        $admin1->password = Hash::make('password');
+        $admin1->role = UserRole::Admin;
+        $admin1->is_active = true;
+        $admin1->email_verified_at = now();
+        $admin1->save();
+
+        // Akun Admin Tambahan (sesuai pengujian)
+        $admin2 = User::firstOrNew(['email' => 'admin@gmail.com']);
+        $admin2->name = 'Admin';
+        $admin2->password = Hash::make('password');
+        $admin2->role = UserRole::Admin;
+        $admin2->is_active = true;
+        $admin2->email_verified_at = now();
+        $admin2->save();
 
         // 2. Akun Barber
-        $barberUser = User::updateOrCreate(
-            ['email' => 'barber@barberflow.com'],
-            [
-                'name' => 'Barber Dimas',
-                'password' => Hash::make('password'),
-                'role' => UserRole::Barber,
-                'is_active' => true,
-                'email_verified_at' => now(),
-            ]
-        );
+        $barberUser = User::firstOrNew(['email' => 'barber@barberflow.com']);
+        $barberUser->name = 'Barber Dimas';
+        $barberUser->password = Hash::make('password');
+        $barberUser->role = UserRole::Barber;
+        $barberUser->is_active = true;
+        $barberUser->email_verified_at = now();
+        $barberUser->save();
 
         Barber::updateOrCreate(
             ['user_id' => $barberUser->id],

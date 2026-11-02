@@ -419,7 +419,8 @@ ON DUPLICATE KEY UPDATE `batch` = 1;
 -- --------------------------------------------------------
 INSERT INTO `users` (`id`, `name`, `email`, `email_verified_at`, `password`, `role`, `is_active`, `created_at`, `updated_at`) VALUES
 (1, 'Admin Barberflow', 'admin@barberflow.com', NOW(), '$2y$12$kyS88z.iarudoT6rbHSCmOkXKswBQbcE0b97EiI0z9OVRqfpzW6li', 'admin', 1, NOW(), NOW()),
-(2, 'Barber Dimas', 'barber@barberflow.com', NOW(), '$2y$12$kyS88z.iarudoT6rbHSCmOkXKswBQbcE0b97EiI0z9OVRqfpzW6li', 'barber', 1, NOW(), NOW())
+(2, 'Barber Dimas', 'barber@barberflow.com', NOW(), '$2y$12$kyS88z.iarudoT6rbHSCmOkXKswBQbcE0b97EiI0z9OVRqfpzW6li', 'barber', 1, NOW(), NOW()),
+(3, 'Admin', 'admin@gmail.com', NOW(), '$2y$12$kyS88z.iarudoT6rbHSCmOkXKswBQbcE0b97EiI0z9OVRqfpzW6li', 'admin', 1, NOW(), NOW())
 ON DUPLICATE KEY UPDATE `password` = VALUES(`password`), `is_active` = VALUES(`is_active`), `role` = VALUES(`role`);
 
 INSERT INTO `barbers` (`id`, `user_id`, `name`, `slug`, `photo`, `bio`, `specialization`, `queue_prefix`, `availability_status`, `is_active`, `accepts_queue`, `daily_capacity`, `created_at`, `updated_at`) VALUES
