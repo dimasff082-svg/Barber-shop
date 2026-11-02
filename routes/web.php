@@ -6,6 +6,14 @@ use App\Http\Controllers\StaffDashboardController;
 use App\Http\Middleware\StaffPrivacy;
 use Illuminate\Support\Facades\Route;
 
+// --------------------------------------------------------------------------
+// Rute Otentikasi Staff (Login & Logout)
+// Ditangani melalui Laravel Fortify (FortifyServiceProvider):
+// • GET  /login  -> Menampilkan halaman login Blade (resources/views/auth/login.blade.php)
+// • POST /login  -> Memproses kredensial email & password
+// • POST /logout -> Mengeluarkan sesi staff
+// --------------------------------------------------------------------------
+
 Route::get('/', [PublicSiteController::class, 'home'])->name('home');
 Route::get('layanan', [PublicSiteController::class, 'services'])->name('public.services');
 Route::get('barber', [PublicSiteController::class, 'barbers'])->name('public.barbers');

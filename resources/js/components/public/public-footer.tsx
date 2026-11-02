@@ -60,13 +60,23 @@ export function PublicFooter() {
                         © {new Date().getFullYear()} BARBERFLOW. Semua hak
                         dilindungi.
                     </p>
-                    <Link
-                        href={auth.user ? dashboard() : login()}
-                        className="inline-flex min-h-11 items-center gap-2 text-sm hover:text-primary"
-                    >
-                        {auth.user ? 'Dashboard staff' : 'Masuk staff'}
-                        <ArrowUpRight aria-hidden="true" className="size-4" />
-                    </Link>
+                    {auth.user ? (
+                        <Link
+                            href={dashboard()}
+                            className="inline-flex min-h-11 items-center gap-2 text-sm hover:text-primary"
+                        >
+                            Dashboard staff
+                            <ArrowUpRight aria-hidden="true" className="size-4" />
+                        </Link>
+                    ) : (
+                        <a
+                            href="/login"
+                            className="inline-flex min-h-11 items-center gap-2 text-sm hover:text-primary"
+                        >
+                            Masuk staff
+                            <ArrowUpRight aria-hidden="true" className="size-4" />
+                        </a>
+                    )}
                 </div>
             </div>
         </footer>
